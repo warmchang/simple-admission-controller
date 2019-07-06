@@ -1,0 +1,5 @@
+manifest.yaml
+certs/*.pem
+certs/*.crt
+certs/*.srl
+certs/*.key
