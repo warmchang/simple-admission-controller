@@ -1,4 +1,5 @@
 manifest.yaml
+certs/*.csr
 certs/*.pem
 certs/*.crt
 certs/*.srl
