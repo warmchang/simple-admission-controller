@@ -31,13 +31,8 @@ spec:
     spec:
       containers:
         - name: webhook
-          image: pipo02mix/grumpy:1.0.0
+          image: chrisdyer/simplewebhook:v0.0.1
           imagePullPolicy: Always
-          args:
-            - -alsologtostderr
-            - --log_dir=/
-            - -v=10
-            - 2>&1
           resources:
             limits:
               memory: 50Mi
@@ -65,7 +60,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: simple
 webhooks:
-  - name: grumpy.pipo02mix.org
+  - name: chrisdyer.simplewebhook.com
     clientConfig:
       service:
         name: simple
