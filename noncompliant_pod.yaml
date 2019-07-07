@@ -4,5 +4,7 @@ metadata:
   name: noncompliant-pod
 spec:
   containers:
-  - image: busybox
+  - image: nginx:1.7.9
     name: noncompliant-pod
+    ports:
+    - containerPort: 80

@@ -13,6 +13,7 @@ fi
 export SERVICE=$1
 export NAMESPACE=$2
 
+# INJECT VARIABLES INTO THE CERT CONFIGURATION
 sed -i .bak -e "s/{SERVICE}/$SERVICE/g" -e "s/{NAMESPACE}/$NAMESPACE/g" certs/simple_config.txt
 
 # CREATE THE PRIVATE KEY FOR OUR CUSTOM CA
@@ -30,12 +31,11 @@ openssl req -new -key certs/simple-key.pem -subj "/CN=$SERVICE.$NAMESPACE.svc" -
 # CREATE THE CERT SIGNING THE CSR WITH THE CA CREATED BEFORE
 openssl x509 -req -in certs/simple.csr -CA certs/ca.crt -CAkey certs/ca.key -CAcreateserial -out certs/simple-crt.pem
 
-# INJECT CA IN THE WEBHOOK CONFIGURATION
+# INJECT VARIABLES INTO THE WEBHOOK CONFIGURATION
 CA_BUNDLE=$(cat certs/ca.crt | base64 | tr -d '\n')
-
 sed -i .bak -e "s/{SERVICE}/$SERVICE/g" -e "s/{NAMESPACE}/$NAMESPACE/g" -e "s/{CA_BUNDLE}/$CA_BUNDLE/g" manifest.yaml
 
 # CREATE SECRET CONTAINING CERT DATA
-kubectl create secret generic $SERVICE -n default \
+kubectl create secret generic $SERVICE -n $NAMESPACE \
       --from-file=key.pem=certs/simple-key.pem \
       --from-file=cert.pem=certs/simple-crt.pem
