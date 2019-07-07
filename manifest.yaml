@@ -2,32 +2,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple
-  namespace: default
+  name: {SERVICE}
+  namespace: {NAMESPACE}
   labels:
-    name: simple
+    name: {SERVICE}
 spec:
   ports:
   - name: webhook
     port: 443
     targetPort: 8080
   selector:
-    name: simple 
+    name: {SERVICE} 
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: simple
-  namespace: default
+  name: {SERVICE}
+  namespace: {NAMESPACE}
   labels:
-    name: simple
+    name: {SERVICE}
 spec:
   replicas: 1
   template:
     metadata:
-      name: simple 
+      name: {SERVICE} 
       labels:
-        name: simple
+        name: {SERVICE}
     spec:
       containers:
         - name: webhook
@@ -51,25 +51,26 @@ spec:
       volumes:
         - name: webhook-certs
           secret:
-            secretName: simple
+            secretName: {SERVICE}
         - name: logs
           emptyDir: {}
 ---
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: simple
+  name: {SERVICE}
 webhooks:
-  - name: chrisdyer.simplewebhook.com
+  - name: {SERVICE}.simplewebhook.com
     clientConfig:
       service:
-        name: simple
+        name: {SERVICE}
         namespace: default
         path: "/validate"
-      caBundle: "${CA_BUNDLE}"
+      caBundle: "{CA_BUNDLE}"
     rules:
       - operations: ["CREATE","UPDATE"]
         apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
     failurePolicy: Ignore
+
