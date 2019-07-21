@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/ChrisTheShark/simple-admission-controller.svg?branch=master)](https://travis-ci.org/ChrisTheShark/simple-admission-controller.svg?branch=master)
 
+Lead Maintainer - [Chris Dyer](https://github.com/ChrisTheShark)
+
 Simple example for creating a custom validating [admission controller](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/) for Kubernetes.
 
 ## Getting Started
