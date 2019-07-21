@@ -43,6 +43,7 @@ func main() {
 		if err := json.Unmarshal(body, &arRequest); err != nil {
 			log.Println("invalid request type recieved")
 			http.Error(w, "incorrect body", http.StatusBadRequest)
+			return
 		}
 
 		raw := arRequest.Request.Object.Raw
