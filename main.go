@@ -30,14 +30,14 @@ func Validate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(body) == 0 {
-		log.Println("no body recieved in request")
+		log.Println("no body received in request")
 		http.Error(w, "empty body", http.StatusBadRequest)
 		return
 	}
 
 	arRequest := v1beta1.AdmissionReview{}
 	if err := json.Unmarshal(body, &arRequest); err != nil || arRequest.Request == nil {
-		log.Println("invalid request type recieved")
+		log.Println("invalid request type received")
 		http.Error(w, "incorrect body", http.StatusBadRequest)
 		return
 	}
@@ -50,7 +50,7 @@ func Validate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if pod.Namespace != "default" {
-		log.Printf("recieved pod event in namespace %s, allowing", pod.Namespace)
+		log.Printf("received creation request for pod %s in namespace %s, allowing", pod.Name, pod.Namespace)
 		return
 	}
 
@@ -63,6 +63,7 @@ func Validate(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
+	log.Printf("received creation request for pod %s in default namespace, rejecting.", pod.Name)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(arResponse)
 }
